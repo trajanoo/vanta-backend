@@ -1,5 +1,3 @@
 import { Router } from "express";
-import pool from "../src/db_config";
+import pool from "../src/db_config.js";
 const router = Router();
-
-// listar tasks de um projeto

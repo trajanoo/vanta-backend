@@ -14,7 +14,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Buscar usuário por ID
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -34,7 +33,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Registrar usuário
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -62,7 +60,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
