@@ -15,7 +15,7 @@ router.get("/projects/:projectId", async (req, res) => {
         res.json(result.rows);
     } catch(err) {
         console.error(err);
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
         res.status(201).json(result.rows[0]);
     } catch(err) {
         console.error(err);
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -45,7 +45,7 @@ router.put("/:id", async (req, res) => {
         res.json(result.rows[0]);
     } catch(err) {
         console.error(err);
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -55,13 +55,13 @@ router.delete("/:id", async (req, res) => {
     try {
         const result = await pool.query("DELETE FROM tasks WHERE id = $1 RETURNING *", [id]);
         if(result.rows.length === 0) {
-            res.status(404).json({ error: "tarefa não encontrada" });
+            return res.status(404).json({ error: "tarefa não encontrada" });
         }
 
         res.json({ message: "tarefa deletada" });
     } catch(err) {
         console.error(err);
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 })
 

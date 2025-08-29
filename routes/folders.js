@@ -12,7 +12,7 @@ router.get("/user/:userId", async (req, res) => {
 
         res.json(result.rows);
     } catch(err) {
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
         const result = await pool.query("INSERT INTO folders (name, user_id) VALUES($1, $2) RETURNING *", [name, user_id]);
         res.status(201).json(result.rows[0]);
     } catch(err) {
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -39,7 +39,7 @@ router.put("/:id", async (req, res) => {
         res.json(result.rows[0]);
     } catch(err) {
         console.error(err.message);
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -55,7 +55,7 @@ router.delete("/:id", async (req, res) => {
         res.json({ message: "pasta deletada" });
     } catch(err) {
         console.error(err);
-        res.status(500).json({ error: err });
+        res.status(500).json({ error: err.message });
     }
 });
 
