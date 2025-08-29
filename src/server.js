@@ -10,10 +10,10 @@ import tasks from '../routes/tasks.js';
 app.use(cors());
 app.use(express.json());
 
-app.use("/users", users);
-app.use("/folders", folders);
-app.use("/projects", projects);
-app.use("/tasks", tasks);
+app.use("/api/users", users);
+app.use("/api/folders", folders);
+app.use("/api/projects", projects);
+app.use("/api/tasks", tasks);
 
 app.listen(3000, () => {
     console.log("server rodando na porta 3000");

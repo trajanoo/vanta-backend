@@ -23,7 +23,8 @@ router.post("/", async (req, res) => {
     const { name, description, folder_id } = req.body
 
     try {
-        const result = await pool.query("INSERT INTO projects (name, description, folder_id) VALUES ($1, $2, $3) RETURNING *", [name, description, folder_id]);
+        const result = await pool.query("INSERT INTO projects (name, description, folder_id) VALUES ($1, $2, $3) RETURNING *",
+        [name, description || null, folder_id]);
         res.status(201).json(result.rows[0]);
     } catch(err) {
         console.error(err);
@@ -37,7 +38,28 @@ router.put("/:id", async (req, res) => {
     const { name, description } = req.body
 
     try {
-        const result = await pool.query("UPDATE projects SET name = $1, description = $2 WHERE id = $3 RETURNING *", [name, description, id]);
+        const fields = []
+        const values = []
+        let index = 1;
+
+        if(name !== undefined) {
+            fields.push(`name = $${index++}`);
+            values.push(name);
+        }
+
+        if(description !== undefined) {
+            fields.push(`description = $${index++}`);
+            values.push(description);
+        }
+
+        if (fields.length === 0) {
+            return res.status(400).json({ error: "nenhum campo fornecido para atualização" });
+        }
+
+        const query = `UPDATE projects SET ${fields.join(", ")} WHERE id = $${index} RETURNING *`;
+
+        const result = await pool.query(query, values);
+        
         if(result.rows.length === 0) {
             return res.status(404).json({ error: "projeto não encontrado" });
         }
